@@ -18,7 +18,6 @@ class SCMData(object):
             self.username = data.get("username")
             self.password = data.get("password")
             self.subfolder = data.get("subfolder", "")
-            self.submodule = data.get("submodule")
         else:
             raise ConanException("Not SCM enabled in conanfile")
 
@@ -33,7 +32,7 @@ class SCMData(object):
     def __repr__(self):
         d = {"url": self.url, "revision": self.revision, "username": self.username,
              "password": self.password, "type": self.type, "verify_ssl": self.verify_ssl,
-             "subfolder": self.subfolder, "submodule": self.submodule}
+             "subfolder": self.subfolder}
         d = {k: v for k, v in d.items() if v}
         return json.dumps(d, sort_keys=True)
 
@@ -65,7 +64,7 @@ class SCM(object):
         return self.repo.excluded_files()
 
     def clone(self):
-        return self.repo.clone(self._data.url, submodule=self._data.submodule)
+        return self.repo.clone(self._data.url)
 
     def checkout(self):
         return self.repo.checkout(self._data.revision)
