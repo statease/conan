@@ -294,6 +294,8 @@ class ConanInstaller(object):
 
                 workspace_package = self._workspace[node.conan_ref] if self._workspace else None
                 if workspace_package:
+                    # use the generator specified in the workspace for the subprojects
+                    node.conanfile.generators = [self._workspace._generator]
                     self._handle_node_workspace(node, workspace_package, inverse_levels, deps_graph)
                 else:
                     package_ref = PackageReference(conan_ref, package_id)
