@@ -7,7 +7,7 @@ from collections import OrderedDict
 from conans.errors import ConanException
 from conans.util.files import load, save, mkdir
 from conans.model.ref import ConanFileReference
-
+from conans.util.log import logger
 
 class LocalPackage(object):
     def __init__(self, base_folder, install_folder, data):
@@ -116,7 +116,8 @@ project({name} CXX)
                 cmake += 'add_subdirectory(%s "%s")\n' % (workspace_package.local_cmakedir, build_folder)
             cmake_path = os.path.join(self._base_folder, "CMakeLists.txt")
             if os.path.exists(cmake_path) and not load(cmake_path).startswith("# conanws"):
-                raise ConanException("Can't generate CMakeLists.txt, will overwrite existing one")
+                logger.info("Can't generate CMakeLists.txt, will overwrite existing one")
+                return
             save(cmake_path, cmake)
 
     def __init__(self, path, install_folder):
